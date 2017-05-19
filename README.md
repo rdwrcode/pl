@@ -8,6 +8,16 @@ no homework
 
 ## wk2: start with SML/NJ
 hw1
+* notes on SML
+```
+(* this is a comment *)
+"this is a string"
+negative number can be written in either 0-7 or ~7
+= is used to test equality. 
+no assignment but binding.
+if-then-else is a complete expression, but if-then is NOT.
+```
+
 * are you covering all cases?
 ```
 fun is_smaller (x: int, y: int) =
