@@ -3,12 +3,22 @@ in SML/NJ, Racket and Ruby
 
 notes on the coursera course, [Programming Languages-Part A,B,C](https://www.coursera.org/learn/programming-languages/)
 
-## wk1: introduce the course and setup SML
+around the programming languages:
+- [ ] syntax: how to write the code
+- [ ] semantics: evaluation rules
+- [ ] idioms: typical patterns to use certain language features
+- [ ] libraries: such as standard lib to access files, basic data structures
+- [ ] tools: implementations of REPL, debugger, formatter, etc.
+To be a decent programmer, you have to know all these aspects.
+
+## wk1: introduce the course and setup SML and GNU Emacs
 no homework
 
 ## wk2: start with SML/NJ
 hw1
-* notes on SML
+* notes on SML: type, syntax, semantics
+ML variable bindings and expressions, shadowing, functions, pairs and tuples, lists, let for local bindings, options, booleans and comparison operations.
+Benefits for no mutation.
 ```
 (* this is a comment *)
 "this is a string"
