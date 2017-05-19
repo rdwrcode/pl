@@ -70,4 +70,5 @@ fun is_older (date1: (int*int*int), date2: (int*int*int)) =
       else false);
 ```
 
+## wk3: compound types and more about SML 2017/05/18
 
