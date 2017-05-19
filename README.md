@@ -3,21 +3,21 @@ in SML/NJ, Racket and Ruby
 
 notes on the coursera course, [Programming Languages-Part A,B,C](https://www.coursera.org/learn/programming-languages/)
 
-## wk1 introduction of the course and setup SML
+## wk1: introduce the course and setup SML
 no homework
 
-## wk2 start with SML/NJ
+## wk2: start with SML/NJ
 hw1
-* are you covering all possible cases?
+* are you covering all cases?
 ```
 fun is_smaller (x: int, y: int) =
   if x < y
   then true
   else false;
 ```
-To compare two integers are straightforward, but to compare two dates in the format of tuple (year, month, day) is not.
+To compare two integers are straightforward like the above. To compare two dates in the format of tuple (year, month, day) is not.
 
-My first version of ```is_older```:
+My first version of function ```is_older```:
 ```
 fun is_older_bad (date1: (int*int*int), date2: (int*int*int)) =
   if (#1 date1) >= (#1 date2)
@@ -31,7 +31,7 @@ fun is_older_bad (date1: (int*int*int), date2: (int*int*int)) =
 	  else false;
 ```
 
-The final version of ```is_older```. This covers all the cases.
+The final version of function ```is_older```. This covers all the cases (branches).
 ```
 fun is_older (date1: (int*int*int), date2: (int*int*int)) =
   if (#1 date1) < (#1 date2)
