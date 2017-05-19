@@ -15,7 +15,7 @@ fun is_smaller (x: int, y: int) =
   then true
   else false;
 ```
-To compare two integers are straightforward like the above. To compare two dates in the format of tuple (year, month, day) is not.
+To compare two integers are straightforward like the above. To compare two dates in the format of tuple ```(year, month, day)``` is not.
 
 My first version of function ```is_older```:
 ```
