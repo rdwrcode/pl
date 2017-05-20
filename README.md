@@ -12,7 +12,7 @@ To be a decent programmer, you have to know all the following aspects around the
 
 Programming is to solve problems.
 - [ ] Divide and conquer: if the problem is too big, chop it into smaller pieces so that each could be solved and later combine the solutions to each smaller problems.
-- [ ] One aspect of Functional programming is to think recursively. Different paradigms is about phrasing the same problems differently.  
+- [ ] One aspect of Functional programming is to think recursively. Different paradigm is to phrase the same problem differently.  
 
 ## wk1: introduce the course and setup SML and GNU Emacs
 no homework
