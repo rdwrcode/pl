@@ -55,7 +55,25 @@ fun get_substitutions2 (xslist, s) =
   in
       check(xslist, [])
   end;
-					       
+
+fun similar_names (xslist, namerecord) =
+  let fun get_firstname fullname =
+	case fullname of
+	    {first, middle, last} => first
+      fun generate_similar (xs, fullname) =
+	case fullname of
+	    {first, middle, last} =>
+	    case xs of
+		[] => []
+	      | x::xs' => {first=x, middle=middle, last=last}::generate_similar(xs', fullname)
+  in
+      let val firstname = get_firstname namerecord
+	  val firstlist = get_substitutions2(xslist, firstname)
+      in
+	  namerecord::generate_similar(firstlist, namerecord)
+      end
+  end;
+	
 (* you may assume that Num is always used with values 2, 3, ..., 10
    though it will not really come up *)
 datatype suit = Clubs | Diamonds | Hearts | Spades
