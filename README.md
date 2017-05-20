@@ -10,9 +10,9 @@ To be a decent programmer, you have to know all the following aspects around the
 - [ ] libraries: such as standard lib to access files, basic data structures
 - [ ] tools: implementations of REPL, debugger, formatter, etc.
 
-Programming is to solve a problem.
-- [ ] Divide and conquer: if the problem is too big, chop it into smaller piece so that it could be solved.
-- [ ] Functional programming requires to think recursively. 
+Programming is to solve problems.
+- [ ] Divide and conquer: if the problem is too big, chop it into smaller pieces so that each could be solved and later combine the solutions to each smaller problems.
+- [ ] One aspect of Functional programming is to think recursively. Different paradigms is about phrasing the same problems differently.  
 
 ## wk1: introduce the course and setup SML and GNU Emacs
 no homework
@@ -74,7 +74,7 @@ fun is_older (date1: (int*int*int), date2: (int*int*int)) =
       else false);
 ```
 
-## wk3: compound types and more about SML 2017/05/18
+## wk3: compound types and pattern matching 2017/05/18
 example code in code/section2
 
 
