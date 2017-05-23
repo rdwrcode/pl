@@ -85,6 +85,53 @@ datatype move = Discard of card | Draw
 
 exception IllegalMove
 
-
 (* put your solutions for problem 2 here *)
+exception NotEnoughCards
+	      
+fun card_color ((suit, rank)) =
+  case suit of
+       Diamonds => "red"
+     | Hearts => "red"
+     | _ => "black";
 
+fun card_value ((suit, rank)) =
+  case rank of 
+      Ace => 11
+    | Jack => 10
+    | Queen => 10
+    | King => 10
+    | x => x;
+
+(* TODO where to raise the exception *)
+fun remove_card (cs, c, e) =
+  case cs of
+      [] => []
+    | x::cs' =>
+      let val num = 0
+	  if c = x
+	  then num + 1
+	  else num
+      in
+	  if c = x andalso num = 0
+	  then remove_card(cs', c, e)
+	  else x::remove_card(cs', c, e)
+      end;
+
+fun all_same_color (cs) =
+  case cs of
+      [] => true
+    | x::cs' => 
+		    [] => true
+		  | y::ds => card_color(x) = card_color(y) andalso all_same_color(ds);
+
+
+				
+						 
+      
+  
+
+	  
+			     
+			    
+		    
+		  
