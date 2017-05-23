@@ -19,6 +19,7 @@ no homework
 
 ## wk2: start with SML/NJ
 example code along with the video in code/section1
+Sample answer hw1sample.sml is very good. 
 
 * notes on SML: type, syntax, semantics
 ML variable bindings and expressions, shadowing, functions, pairs and tuples, lists, let for local bindings, options, booleans and comparison operations.
