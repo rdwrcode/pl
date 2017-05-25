@@ -155,38 +155,3 @@ fun oldest (dates: (int*int*int) list) =
       in
 	  SOME (oldest_nonempty dates)
       end;
-
-(* 12 challenge problem *)
-(* TODO *)
-fun is_same_date (d1: (int*int*int), d2: (int*int*int)) =
-  (#1 d1 = #1 d2) andalso (#2 d1 = #2 d2) andalso (#3 d1 = #3 d2)
-
-fun is_date_in_list (d: (int*int*int), dx: (int*int*int) list) =
-  if is_same_date(d, hd dx)
-  then true
-  else is_date_in_list(d, tl dx)
-		      
-fun remove_duplicate (dx: (int*int*int) list) =
-  if null dx
-  then []
-  else let val new_list = []
-       in
-	   if null (tl dx)
-	   then
-	       if is_date_in_list(hd dx, tl dx)
-	       then remove_duplicate(tl dx)   
-	       else (hd dx)::new_list
-	   else
-	       [hd dx]			 
-       end
-	   
-fun number_in_months_challenge (dates: (int*int*int) list, months: int list) =
-  if null months
-  then 0
-  else number_in_month(dates, (hd months)) + number_in_months(dates, (tl months));
-
-fun dates_in_months_challenge (dates: (int*int*int) list, months: int list) =
-  if null months
-  then []
-  else dates_in_month(dates, hd months)@dates_in_months(dates, tl months);
-

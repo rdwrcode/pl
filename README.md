@@ -74,6 +74,7 @@ fun is_older (date1: (int*int*int), date2: (int*int*int)) =
 		else false)			      
       else false);
 ```
+But there are better ways to write ```is_older```.
 
 ## wk3: compound types and pattern matching 2017/05/18
 example code in code/section2
