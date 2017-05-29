@@ -1,4 +1,5 @@
 (* Coursera Programming Languages, Homework 3, Provided Code *)
+(* solutions by Hailin 2017/05/26 *)
 
 exception NoAnswer
 
@@ -26,6 +27,37 @@ fun g f1 f2 p =
 	  | _                 => 0
     end
 
+(* 1 *)
+fun only_capitals (xs: string list) =
+  List.filter (fn x => Char.isUpper(String.sub(x, 0))) xs;
+
+(* 2 *)
+fun longest_string1 (xs: string list) =
+  List.foldl (fn (s,x) => if String.size s > String.size x then s else x) "" xs;
+
+(* 3 *)
+fun longest_string2 (xs: string list) =
+  List.foldl (fn (s,x) => if String.size x > String.size s then x else s) "" xs;
+
+(* 4
+ * longesr_string_helper is curried 
+ *)
+fun longest_string_helper f xs =
+  List.foldl (fn (s,x) => if f(String.size s,String.size x) then s else x) "" xs;
+
+(* why this anonymous won't work?
+val longest_string_helper =
+  fn f => fn xs => List.foldl (fn (x, y) => if f(x, y) then x else y) "" xs
+*)
+			      
+fun longest_string3 (xs: string list) =
+  longest_string_helper (fn (s,x) => s > x) xs;
+
+fun longest_string4 (xs: string list) =
+  longest_string_helper (fn (s,x) => s >= x) xs;
+
+
+	      
 (**** for the challenge problem only ****)
 
 datatype typ = Anything
