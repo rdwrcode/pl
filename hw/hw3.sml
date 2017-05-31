@@ -170,7 +170,7 @@ fun check_pat pat =
   end;
 
 (**** 11 ****)
-fun isMatch (value, pattern) =
+fun isMatch (value, pat) =
   let fun check v p acc =
 	case (v, p) of
 	    (_, Wildcard) => acc
@@ -184,11 +184,11 @@ fun isMatch (value, pattern) =
 	  | (Constructor(s1,v2), ConstructorP(s2,p2)) => if s1=s2 then true andalso (check v2 p2 acc) andalso acc else false		     
 	  | (_,_) => false andalso acc
   in
-      check value pattern true
+      check value pat true
   end;
 			 
-fun match (value, pattern) =
-  if isMatch(value, pattern) then SOME [] else NONE;
+fun match (value, pat) =
+  if isMatch(value, pat) then SOME [] else NONE;
   
 
 (**** for the challenge problem only ****)
