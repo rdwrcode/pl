@@ -31,14 +31,6 @@ val test6c = rev_string "" = ""
 				
 val test6d = rev_string "A" = "A"
 
-val test6e = rev_string2 "abc" = "cba"
-
-val test6f = rev_string2 "xyz" = "zyx"
-				    
-val test6g = rev_string2 "" = ""
-				
-val test6h = rev_string2 "A" = "A"
-
 val test7 = first_answer (fn x => if x > 3 then SOME x else NONE) [1,2,3,4,5] = 4
 										
 val test8 = all_answers (fn x => if x = 1 then SOME [x] else NONE) [2,3,4,5,6,7] = NONE
