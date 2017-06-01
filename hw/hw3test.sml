@@ -50,7 +50,7 @@ val test8c = all_answers (fn x => if x > 2 andalso x < 6 then SOME [x] else NONE
 															     										       
 val test9a = count_wildcards Wildcard = 1
 
-(*
+
 val test9b = count_wild_and_variable_lengths (Variable("a")) = 1
 
 val test9c = count_some_var ("x", Variable("x")) = 1
@@ -60,4 +60,4 @@ val test10 = check_pat (Variable("x")) = true
 val test11 = match (Const(1), UnitP) = NONE
 
 val test12 = first_match Unit [UnitP] = SOME []
-*)
+

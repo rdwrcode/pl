@@ -178,22 +178,62 @@ fun isMatch (value, pat) =
 	  | (Unit, UnitP) => acc
 	  | (Const i, ConstP j) => if i=j then acc else false
 	  | (Tuple vx, TupleP px) =>
-	    let val lx = List.length(vx)
+	    (let val lx = List.length(vx)
 		val ly = List.length(px)
+		val xylist = ListPair.zip(vx, px)
 	    in
 		if lx = ly
-		then true
+		then List.foldl (fn ((v1, p1),i) => ((check v1 p1 i) andalso i)) acc xylist
 		else false
-	    end
+	    end)
 	  | (Constructor(s1,v2), ConstructorP(s2,p2)) => if s1=s2 then true andalso (check v2 p2 acc) andalso acc else false		     
 	  | (_,_) => false andalso acc
   in
       check value pat true
   end;
 			 
+(*
 fun match (value, pat) =
   if isMatch(value, pat) then SOME [] else NONE;
-  
+*)
+fun match (value, pat) =
+  let fun check v p =
+	case (v, p) of
+	    (_, Wildcard) => SOME []
+	  | (_, Variable s) => SOME [(s, v)]
+	  | (Unit, UnitP) => SOME []
+	  | (Const i, ConstP j) => if i=j then SOME [] else NONE
+	  | (Tuple vx, TupleP px) =>
+	    (let val lx = List.length(vx)
+		val ly = List.length(px)
+		val xylist = ListPair.zip(vx, px)
+		val ans = all_answers (fn (v1, p1) => (check v1 p1)) xylist
+	    in
+		if lx =ly
+		then all_answers (fn (v1, p1) => (check v1 p1)) xylist
+		else NONE
+	    end)
+	  | (Constructor(s1,v2), ConstructorP(s2,p2)) =>
+	    if s1=s2
+	    then check v2 p2
+	    else NONE
+	  | (_,_) => NONE
+  in
+      check value pat
+  end;
+(* still some issues with Tuple branch or maybe all_answers *)
+
+(* 12 *)
+fun first_match v px =
+  case px of
+      p::px' => (let val firstcheck = match (v, p)		
+		 in
+		     if isSome firstcheck
+		     then firstcheck
+		     else first_match v px'		      
+		 end)
+    | _ => NONE;
+
 
 (**** for the challenge problem only ****)
 
