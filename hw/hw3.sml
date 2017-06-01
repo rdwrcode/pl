@@ -178,9 +178,13 @@ fun isMatch (value, pat) =
 	  | (Unit, UnitP) => acc
 	  | (Const i, ConstP j) => if i=j then acc else false
 	  | (Tuple vx, TupleP px) =>
-	    if List.length(vx)=List.length(px)
-	    then true
-	    else false
+	    let val lx = List.length(vx)
+		val ly = List.length(px)
+	    in
+		if lx = ly
+		then true    
+		else false
+	    end
 	  | (Constructor(s1,v2), ConstructorP(s2,p2)) => if s1=s2 then true andalso (check v2 p2 acc) andalso acc else false		     
 	  | (_,_) => false andalso acc
   in
