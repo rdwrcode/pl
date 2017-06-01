@@ -182,7 +182,7 @@ fun isMatch (value, pat) =
 		val ly = List.length(px)
 	    in
 		if lx = ly
-		then true    
+		then true
 		else false
 	    end
 	  | (Constructor(s1,v2), ConstructorP(s2,p2)) => if s1=s2 then true andalso (check v2 p2 acc) andalso acc else false		     

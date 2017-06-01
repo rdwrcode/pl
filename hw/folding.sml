@@ -51,7 +51,11 @@ fun app f xs = myfoldr (fn (x, _) => f x) () xs;
 fun filter f xs = myfoldr (fn (x, a) => if f x then x::a else a) [] xs;
 
 (* List.foldl *)
+
 fun isEven i = if (i mod 2) = 0 then true else false;
+
+fun isOdd i = if (i mod 2) = 1 then true else false;
+
 (*
 exception LengthNotMatch
 fun merge (xs, ys) = if List.length(xs)=List.length(ys)
@@ -72,6 +76,13 @@ val test3 = (mlist [1, 3, 5] [2, 4, 6]) = [(1,2),(3,4),(5,6)];
 fun sumall xs = List.foldl (fn ((x, y),i) => (x+y+i)) 0 xs;
 val test4 = sumall (mlist [1, 3, 5] [2, 4, 6]) = 21;
 
-
+fun oddEvenPair xs ys =
+  let val lx = List.length(xs)
+      val ly = List.length(ys)
+  in
+      if lx = ly
+      then List.foldl (fn ((x, y), i) => (isOdd(x) andalso isEven(y) andalso i)) true ListPair.zip(xs, ys)
+      else false
+  end;
 
 
