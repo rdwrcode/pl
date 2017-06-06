@@ -29,3 +29,49 @@ if not #f, then all true
 
 ## local binding
 
+## Delayed evaluation
+how to delay evaluation: put the expression in a function and don't call it.
+```
+(define (my-if x y z)
+  (if x (y) (z)))
+
+(define (fact n)
+  (my-if (= n 0)
+    (lambda () 1)
+    (lambda () (* n (fact (- n 1))))))
+```
+A zero-argument function used to delay evaluation is called a thunk.
+```
+expression e, evaluate it and get the result
+(lambda () e), a function is evaluated when called
+(e), evaluate e to some thunk and then call the thunk
+```
+
+```
+(define (my-delay th)
+  (mcons #f th))
+
+(define (my-force p)
+  (if (mcar p)
+    (mcdr p)
+    (begin (set-mcar! p #t)
+           (set-mcar! p ((mcdr p)))
+           (mcdr p))))
+```
+
+## streams: idiom
+a stream = a thunk that called returns a pair
+```
+(define ones (lambda () (cons 1 ones)))
+```
+
+## memoization: idiom
+if a function has no side-effect and does not read mutable memory, npo point to calculating it twice.
+thunk, promises do not take arguments.
+
+## macros
+how to transform some new syntax into different syntax in the source language.
+token, parenthesis, etc.
+
+
+

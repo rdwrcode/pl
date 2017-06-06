@@ -29,6 +29,19 @@
 (define nats2  (stream-maker + 1))
 (define powers2 (stream-maker * 2))
 
+;; use
+;> (powers-of-two)
+;'(2 . #<procedure:...sing_streams.rkt:22:34>)
+
+;> (car (powers-of-two))
+;2
+
+;> (car ((cdr (powers-of-two))))
+;4
+
+;> (car ((cdr ((cdr (powers-of-two))))))
+;8
+
 ;; code that uses streams
 
 (define (number-until stream tester)
@@ -40,3 +53,6 @@
     (f stream 1)))
 
 (define four (number-until powers-of-two (lambda (x) (= x 16))))
+
+;
+(define (f x) (cons x (lambda () (f (+ x 1)))))

@@ -20,17 +20,19 @@
         1
         (f 1 1 3))))
 
+; memoization
+; 
 (define fibonacci3
-  (letrec([memo null] ; list of pairs (arg . result) 
+  (letrec([memo null] ; list of pairs (arg . result), initial value is null 
           [f (lambda (x)
-               (let ([ans (assoc x memo)])
+               (let ([ans (assoc x memo)]) ; check if it is in the table
                  (if ans 
-                     (cdr ans)
+                     (cdr ans) ; true, return the result
                      (let ([new-ans (if (or (= x 1) (= x 2))
                                         1
                                         (+ (f (- x 1))
                                            (f (- x 2))))])
                        (begin 
-                         (set! memo (cons (cons x new-ans) memo))
+                         (set! memo (cons (cons x new-ans) memo)) ; change the table
                          new-ans)))))])
     f))
