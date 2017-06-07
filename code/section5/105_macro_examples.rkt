@@ -11,7 +11,7 @@
   (syntax-rules (to do)
     [(for lo to hi do body)
      (let ([l lo]
-           [h hi])
+           [h hi]) ; evaluate lo and hi only once!
        (letrec ([loop (lambda (it)
                         (if (> it h)
                             #t
@@ -21,7 +21,7 @@
 ;; let2 allows up to two local bindings (with let* semantics) with fewer parentheses
 ;; than let*
 (define-syntax let2
-  (syntax-rules ()
+  (syntax-rules () ; different cases
     [(let2 () body)
      body]
     [(let2 (var val) body)
@@ -40,7 +40,7 @@
     [(my-let* () body)
      body]
     [(my-let* ([var0 val0]
-               [var-rest val-rest] ...)
+               [var-rest val-rest] ...) ; one or more of previous like spread
               body)
      (let ([var0 val0])
        (my-let* ([var-rest val-rest] ...)

@@ -70,8 +70,49 @@ if a function has no side-effect and does not read mutable memory, npo point to 
 thunk, promises do not take arguments.
 
 ## macros
-how to transform some new syntax into different syntax in the source language.
-token, parenthesis, etc.
+macro definition: how to transform some new syntax into different syntax in the source language.
+macro system: a language (or part of a larger language) for defining macros.
+macro expansion: the process of rewriting the syntax for each macro use.
+
+tokenization, parenthesization, and scope.
+
+```
+(define-syntax my-if
+  (syntax-rules (then else)
+    [(my-if e1 then e2 else e3)
+     (if e1 e2 e3)]))
+```
+
+variables, macros, and hygiene
+the following functions are equivalent to each other.
+```
+(define (dbl x) (+ x x))
+(define (dbl x) (* 2 x))
+```
+the following macros are not equivalent.
+```
+(define-syntax dbl 
+  (syntax-rules () 
+    [(dbl x) (+ x x)]))
+
+(define-syntax dbl 
+  (syntax-rules () 
+    [(dbl x) (* 2 x)]))
+```
+If you use the following code with the macros above,
+```
+(dbl (begin (print "hi") 42))
+```
+Better macro
+```
+(define-syntax dbl 
+  (syntax-rules () 
+    [(dbl x) 
+     (let ([y x]) ; evaluate x only once!
+          (+ y y)]))
+```
+Local variable is separated from local variable in the macro, even if both has the same name.
+Secretly renames local variables in macros with fresh names.
 
 
 
