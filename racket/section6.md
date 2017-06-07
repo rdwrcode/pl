@@ -7,4 +7,21 @@
 ## symbols
 ```'foo``` use ```eq?``` to compare. 
  
+## struct
+```
+(struct foo (bar baz quux) #:transparent)
+(struct card (suit rank) #:transparent #:mutable)
+
+(struct const (int) #:transparent)
+```
+better style and more concise
+more abstract for module system and contract system in Racket.
+
+* a function can not introduce multiple bindings
+* neither functions nor macros can create a new kind of data
+
+## dealing with variables and environment
+List of pairs (strings and values)
+closure: code part + its environment
+free variables: not bound in closure
 
