@@ -25,9 +25,30 @@
 ;; Problem 1
 
 ;; CHANGE (put your solutions here)
+;; 1a
+(define (racketlist->mupllist x)
+  (letrec ([args x]
+           [f (lambda (xs)
+                (if (null? xs)
+                    (aunit)
+                    (apair (car xs) (f (cdr xs)))))])
+    (f args)))
+
+;; testing
+(define tx (racketlist->mupllist (list (int 3) (int 4))))
+(define ty (apair (int 3) (apair (int 4) (aunit))))
+(equal? tx ty)
+
+;; 1b
+(define (mupllist->racketlist x)
+  (letrec ([f (lambda (xs)
+                (if (apair? xs)
+                    (append (list (apair-e1 xs)) (f (apair-e2 xs)))
+                    null))])
+    (f x)))
 
 ;; Problem 2
-
+                    
 ;; lookup a variable in an environment
 ;; Do NOT change this function
 (define (envlookup env str)
@@ -51,6 +72,31 @@
                        (int-num v2)))
                (error "MUPL addition applied to non-number")))]
         ;; CHANGE add more cases here
+        [(int? e) e]
+        [(ifgreater? e)
+         (let ([v1 (eval-under-env (ifgreater-e1 e) env)]
+               [v2 (eval-under-env (ifgreater-e2 e) env)])
+           (if (and (int? v1)
+                    (int? v2))
+               (if (> (int-num v1) (int-num v2))
+                   (eval-under-env (ifgreater-e3 e) env)
+                   (eval-under-env (ifgreater-e4 e) env))
+               (error "MUPL ifgreater compared with non-number")))]
+        [(mlet? e)
+         (let ([v (mlet-var e)]
+               [exp (eval-under-env (mlet-e e) env)]
+               [body (eval-under-env (mlet-body e) env)])
+           (body))] ; how to add it to the environment?
+        [(call? e)
+         (let ([funexp (eval-under-env (call-funexp e) env)]
+               [actual (eval-under-env (call-actual e) env)])
+           (funexp actual))]
+        [(fun? e)
+         (let ([fname (fun-nameopt e)]
+               [ff (fun-formal e)]
+               [fbody (eval-under-env (fun-body e) env)])
+           )]
+        
         [#t (error (format "bad MUPL expression: ~v" e))]))
 
 ;; Do NOT change
