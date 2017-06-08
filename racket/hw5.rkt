@@ -48,7 +48,9 @@
     (f x)))
 
 ;; Problem 2
-                    
+
+(define mycall (call (closure '() (fun #f "x" (add (var "x") (int 7)))) (int 1)))
+
 ;; lookup a variable in an environment
 ;; Do NOT change this function
 (define (envlookup env str)
@@ -82,21 +84,63 @@
                    (eval-under-env (ifgreater-e3 e) env)
                    (eval-under-env (ifgreater-e4 e) env))
                (error "MUPL ifgreater compared with non-number")))]
+        [(apair? e)
+         (let ([v1 (eval-under-env (apair-e1 e) env)]
+               [v2 (eval-under-env (apair-e2 e) env)])
+           (apair v1 v2))]
+        [(fst? e)
+         (let ([mypair (fst-e e)])
+           (if (apair? mypair)
+               (apair-e1 mypair)
+               (error "MUPL fst applied to non-pair")))]
+        [(snd? e)
+         (let ([mypair (snd-e e)])
+           (if (apair? mypair)
+               (apair-e2 mypair)
+               (error "MUPL snd applied to non-pair")))]
         [(mlet? e)
-         (let ([v (mlet-var e)]
-               [exp (eval-under-env (mlet-e e) env)]
-               [body (eval-under-env (mlet-body e) env)])
-           (body))] ; how to add it to the environment?
+         (let ([varname (mlet-var e)]
+               [varvalue (mlet-e e)]
+               [mlet-body (mlet-body e)])
+           (eval-under-env mlet-body (list (cons varname varvalue) env)))]
+        [(closure? e)
+         (let ([env-c (closure-env e)]
+               [fun-c (closure-fun e)])
+           (eval-under-env fun-c env-c))]
+        [(fun? e)
+         (let ([f-name (fun-nameopt e)]
+               [f-arg (fun-formal e)]
+               [f-body (fun-body e)])
+           (if (equal? f-name #f)
+               (closure (list (cons "farg" f-arg)
+                              env)
+                        f-body)
+               (closure (list (cons "farg" f-arg)
+                              (cons "fname" f-name)
+                              env)
+                        f-body)))]
+        [(call? e)
+         (let ([fexp (eval-under-env (call-funexp e) env)]
+               [fact (eval-under-env (call-actual e) env)])
+           (if (closure? fexp)
+               (let ([c-env (closure-env fexp)]
+                     [c-fun (closure-fun fexp)])
+                 (eval-under-env (fun-body c-fun)
+                                 (list (cons (fun-formal c-fun)
+                                             fact)
+                                       c-env)))
+               (error "MUPL call applied to non-closure")))]
+               
+        [(isaunit? e)
+         (if (aunit? isaunit-e)
+             (int 1)
+             (int 0))]
         [(call? e)
          (let ([funexp (eval-under-env (call-funexp e) env)]
                [actual (eval-under-env (call-actual e) env)])
-           (funexp actual))]
-        [(fun? e)
-         (let ([fname (fun-nameopt e)]
-               [ff (fun-formal e)]
-               [fbody (eval-under-env (fun-body e) env)])
-           )]
-        
+           (if (closure? funexp)
+               (eval-under-env funexp env)
+               (error "MUPL call non-closure")))]
         [#t (error (format "bad MUPL expression: ~v" e))]))
 
 ;; Do NOT change
