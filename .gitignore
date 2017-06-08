@@ -1,4 +1,4 @@
 *.sml~
 *.rkt~
 *.swp
-./racket/compiled/
+racket/compiled/
