@@ -103,34 +103,41 @@
                [varvalue (mlet-e e)]
                [mlet-body (mlet-body e)])
            (eval-under-env mlet-body (list (cons varname varvalue) env)))]
+        ;; closure is an internal data structure
+        ;; if we see a closure, it is a value in MUPL, we should not evaluate it.
+        ;; just return it back.
         [(closure? e)
          (let ([env-c (closure-env e)]
                [fun-c (closure-fun e)])
-           (eval-under-env fun-c env-c))]
+           (closure env-c fun-c))]
+        ;; fun is evaluated to a closure
         [(fun? e)
          (let ([f-name (fun-nameopt e)]
                [f-arg (fun-formal e)]
                [f-body (fun-body e)])
            (if (equal? f-name #f)
-               (closure (list (cons "farg" f-arg)
+               (closure (list (cons "funarg" f-arg)
                               env)
                         f-body)
-               (closure (list (cons "farg" f-arg)
-                              (cons "fname" f-name)
+               (closure (list (cons "funarg" f-arg)
+                              (cons "funname" f-name)
                               env)
                         f-body)))]
+        ;; it is time to evaluate all the closures recursively
+        ;; this is the main point to have call
         [(call? e)
-         (let ([fexp (eval-under-env (call-funexp e) env)]
-               [fact (eval-under-env (call-actual e) env)])
-           (if (closure? fexp)
-               (let ([c-env (closure-env fexp)]
-                     [c-fun (closure-fun fexp)])
-                 (eval-under-env (fun-body c-fun)
-                                 (list (cons (fun-formal c-fun)
-                                             fact)
-                                       c-env)))
-               (error "MUPL call applied to non-closure")))]
-               
+         (let ([funexp (eval-under-env (call-funexp e) env)]
+               [actual (eval-under-env (call-actual e) env)])
+           (if (closure? funexp)
+               (let ([c-env (closure-env funexp)]
+                     [c-fun (closure-fun funexp)])
+                 (begin
+                   (letrec ([new-c (eval-under-env c-fun c-env)]
+                         [vname (envlookup (closure-env new-c) "funarg")]
+                         [newenv (list (cons vname actual) null)]
+                         [fbody (closure-fun new-c)])
+                     (eval-under-env fbody newenv))))
+               (error "MUPL call non-closure")))]
         [(isaunit? e)
          (if (aunit? isaunit-e)
              (int 1)
@@ -149,11 +156,18 @@
         
 ;; Problem 3
 
-(define (ifaunit e1 e2 e3) "CHANGE")
+(define (ifaunit e1 e2 e3)
+  (if (aunit? e1) e2 e3))
 
-(define (mlet* lstlst e2) "CHANGE")
+(define (mlet* lstlst e2)
+  (envlookup lstlst (var-string e2)))
 
-(define (ifeq e1 e2 e3 e4) "CHANGE")
+(define (ifeq e1 e2 e3 e4)
+  (let ([v1 (if (int? e1) (int-num e1) (error "ifeq e1 applied to non-int"))]
+        [v2 (if (int? e2) (int-num e2) (error "ifeq e2 applied to non-int"))])
+    (if (= v1 v2)
+        e3
+        e4)))
 
 ;; Problem 4
 
