@@ -134,11 +134,18 @@
                (let ([c-env (closure-env funexp)]
                      [c-fun (closure-fun funexp)])
                  (begin
-                   (letrec ([new-c (eval-under-env c-fun c-env)]
-                         [vname (envlookup (closure-env new-c) "funarg")]
-                         [newenv (list (cons vname actual) null)]
-                         [fbody (closure-fun new-c)])
-                     (eval-under-env fbody newenv))))
+                   (if (null? c-env)
+                       (letrec ([new-c (eval-under-env c-fun c-env)]
+                                [vname (envlookup (closure-env new-c) "funarg")]
+                                [newenv (list (cons vname actual) null)]
+                                [fbody (closure-fun new-c)])
+                         (eval-under-env fbody newenv))
+                       (letrec ([new-c (eval-under-env c-fun c-env)]
+                                [vname (envlookup (closure-env new-c) "funarg")]
+                                [newenv (list c-env (cons vname actual))]
+                                [fbody (closure-fun new-c)])
+                         (eval-under-env fbody newenv))
+                       )))
                (error "MUPL call non-closure")))]
         [(isaunit? e)
          (if (aunit? (eval-under-env (isaunit-e e) env))
@@ -188,39 +195,16 @@
 ;; single-element list
 ;; empty list
 
-(define mupl-list
-  (lambda (f lst acc)
-    (let ([fname (fun-nameopt f)]
-          [fargs (fun-formal f)]
-          [fbody (fun-body f)])
-      (if (aunit? lst)
-          acc
-          (mupl-list (apair-e2 lst) (apair (f (apair-e1 lst)) acc))))))
-
-(define (mupl-list2 f lst acc)
+;; helper
+(define (mupl-list f lst acc)
   (let ([fname (fun-nameopt f)]
         [fargs (fun-formal f)]
         [fbody (fun-body f)])
     (if (aunit? lst)
         acc
-        (mupl-list2 f
-                    (apair-e2 lst)
-                    (apair (call (fun fname fargs fbody) (apair-e1 lst)) acc)))))
-
-(define mupl-map1
-  (lambda (f)
-    (lambda (lst)
-      (mupl-list f lst (aunit)))))
-
-(define mupl-map2
-  (lambda (f)
-    (lambda (lst)
-      (let ([fname (fun-nameopt f)]
-            [fargs (fun-formal f)]
-            [fbody (fun-body f)])
-        (if (aunit? (apair-e1 lst))
-            (error "end")
-            (call (fun fname fargs fbody) (apair-e1 lst)))))))
+        (mupl-list f
+                   (apair-e2 lst)
+                   (apair (apair-e1 lst) acc)))))
 
 (define mupl-map
   (lambda (f)
@@ -230,7 +214,7 @@
             [fbody (fun-body f)])
         (if (aunit? (apair-e1 lst))
             (fun fname fargs (cons fbody (aunit)))
-            (fun fname fargs (cons fbody (
+            (fun fname fargs (cons fbody (apair-e1 lst))))))))
         
 (define mupl-mapAddN 
   (mlet "map" mupl-map

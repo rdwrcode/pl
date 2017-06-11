@@ -24,12 +24,18 @@
 ;;
 (define mcall (call (closure '() mfun) mfactual))
 
+(define env1 (cons "x" (int 1)))
+
+(define mcall2 (call (closure env1 mfun) (aunit)))
+
 (define mpfun (call mupl-map mfun))
 
 (define ans1 (apair (int 8) (aunit)))
 
 (define firstcall (call mupl-map mfun))
 (define secondcall (call (firstcall mlist2)))
+
+
 
 ;;(eval-exp (call (call mupl-map (fun #f "x" (add (var "x") (int 7)))) (apair (int 1) (aunit))))
 
