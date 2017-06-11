@@ -88,15 +88,17 @@
          (let ([v1 (eval-under-env (apair-e1 e) env)]
                [v2 (eval-under-env (apair-e2 e) env)])
            (apair v1 v2))]
+        [(aunit? e)
+         (aunit)]
         [(fst? e)
-         (let ([mypair (fst-e e)])
-           (if (apair? mypair)
-               (apair-e1 mypair)
+         (let ([p (eval-under-env (fst-e e) env)])
+           (if (apair? p)
+               (apair-e1 p)
                (error "MUPL fst applied to non-pair")))]
         [(snd? e)
-         (let ([mypair (snd-e e)])
-           (if (apair? mypair)
-               (apair-e2 mypair)
+         (let ([p (eval-under-env (snd-e e) env)])
+           (if (apair? p)
+               (apair-e2 p)
                (error "MUPL snd applied to non-pair")))]
         [(mlet? e)
          (let ([varname (mlet-var e)]
@@ -139,7 +141,7 @@
                      (eval-under-env fbody newenv))))
                (error "MUPL call non-closure")))]
         [(isaunit? e)
-         (if (aunit? isaunit-e)
+         (if (aunit? (eval-under-env (isaunit-e e) env))
              (int 1)
              (int 0))]
         [(call? e)
@@ -157,22 +159,79 @@
 ;; Problem 3
 
 (define (ifaunit e1 e2 e3)
-  (if (aunit? e1) e2 e3))
+  (if (aunit? (eval-exp e1)) e2 e3))
+
+;; helper function
+;; acc serves as env for eval-under-env
+(define (evallist lst acc)
+  (if (null? lst)
+      acc
+      (evallist (cdr lst) (list (cons (car (car lst))
+                                      (eval-under-env (cdr (car lst)) acc))
+                                acc))))
 
 (define (mlet* lstlst e2)
-  (envlookup lstlst (var-string e2)))
+  (envlookup (evallist lstlst null) (var-string e2)))
 
+;; TODO ifeq requires more touch, _x, _y as variable names
+;;
+  
 (define (ifeq e1 e2 e3 e4)
-  (let ([v1 (if (int? e1) (int-num e1) (error "ifeq e1 applied to non-int"))]
-        [v2 (if (int? e2) (int-num e2) (error "ifeq e2 applied to non-int"))])
+  (let ([v1 (if (int? (eval-exp e1)) (int-num e1) (error "ifeq e1 applied to non-int"))]
+        [v2 (if (int? (eval-exp e2)) (int-num e2) (error "ifeq e2 applied to non-int"))])
     (if (= v1 v2)
         e3
         e4)))
 
 ;; Problem 4
+;; multiple-element list
+;; single-element list
+;; empty list
 
-(define mupl-map "CHANGE")
+(define mupl-list
+  (lambda (f lst acc)
+    (let ([fname (fun-nameopt f)]
+          [fargs (fun-formal f)]
+          [fbody (fun-body f)])
+      (if (aunit? lst)
+          acc
+          (mupl-list (apair-e2 lst) (apair (f (apair-e1 lst)) acc))))))
 
+(define (mupl-list2 f lst acc)
+  (let ([fname (fun-nameopt f)]
+        [fargs (fun-formal f)]
+        [fbody (fun-body f)])
+    (if (aunit? lst)
+        acc
+        (mupl-list2 f
+                    (apair-e2 lst)
+                    (apair (call (fun fname fargs fbody) (apair-e1 lst)) acc)))))
+
+(define mupl-map1
+  (lambda (f)
+    (lambda (lst)
+      (mupl-list f lst (aunit)))))
+
+(define mupl-map2
+  (lambda (f)
+    (lambda (lst)
+      (let ([fname (fun-nameopt f)]
+            [fargs (fun-formal f)]
+            [fbody (fun-body f)])
+        (if (aunit? (apair-e1 lst))
+            (error "end")
+            (call (fun fname fargs fbody) (apair-e1 lst)))))))
+
+(define mupl-map
+  (lambda (f)
+    (lambda (lst)
+      (let ([fname (fun-nameopt f)]
+            [fargs (fun-formal f)]
+            [fbody (fun-body f)])
+        (if (aunit? (apair-e1 lst))
+            (fun fname fargs (cons fbody (aunit)))
+            (fun fname fargs (cons fbody (
+        
 (define mupl-mapAddN 
   (mlet "map" mupl-map
         "CHANGE (notice map is now in MUPL scope)"))

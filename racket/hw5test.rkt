@@ -28,14 +28,23 @@
    ;; call test
    (check-equal? (eval-exp (call (closure '() (fun #f "x" (add (var "x") (int 7)))) (int 1))) (int 8) "call test")
    
-   ;;snd test
+   ;; snd test
    (check-equal? (eval-exp (snd (apair (int 1) (int 2)))) (int 2) "snd test")
+
+   ;; complex fst/snd test
+   (check-equal? (eval-exp (fst (apair (add (int 1) (int 3)) (aunit)))) (int 4) "complex fst/snd test")
    
    ;; isaunit test
    (check-equal? (eval-exp (isaunit (closure '() (fun #f "x" (aunit))))) (int 0) "isaunit test")
+   ;; expression should be evaluated before comparing to aunit?
+   (check-equal? (eval-exp (isaunit (fst (apair (aunit) (aunit))))) (int 1) "isaunit test2")
+   ;; value should be evaluated to value
+   (check-equal? (eval-exp (isaunit (aunit))) (int 1) "isaunit test3")
    
    ;; ifaunit test
    (check-equal? (eval-exp (ifaunit (int 1) (int 2) (int 3))) (int 3) "ifaunit test")
+
+   (check-equal? (eval-exp (ifaunit (fst (apair (aunit) (int 0))) (int 4) (int 10))) (int 4) "ifaunit first expression is aunit test")
    
    ;; mlet* test
    (check-equal? (eval-exp (mlet* (list (cons "x" (int 10))) (var "x"))) (int 10) "mlet* test")
