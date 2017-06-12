@@ -3,6 +3,7 @@
 - [ ] dynamically typed. use ```struct``` for abstraction and modularity.
 - [ ] how to write a program in one programming language that is an implementation of another programming language
 - [ ] compiler vs interpreter
+- [ ] hw5 is challenge. The difficulty is two-folds: when to use MUPL or racket and evaluate MUPL expression or not
 
 ## symbols
 ```'foo``` use ```eq?``` to compare. 
