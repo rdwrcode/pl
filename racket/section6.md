@@ -3,7 +3,6 @@
 - [ ] dynamically typed. use ```struct``` for abstraction and modularity.
 - [ ] how to write a program in one programming language that is an implementation of another programming language
 - [ ] compiler vs interpreter
-- [ ] hw5 is challenge. The difficulty is two-folds: when to use MUPL or racket and evaluate MUPL expression or not
 
 ## symbols
 ```'foo``` use ```eq?``` to compare. 
@@ -25,4 +24,15 @@ more abstract for module system and contract system in Racket.
 List of pairs (strings and values)
 closure: code part + its environment
 free variables: not bound in closure
+
+## hw5
+hw5 is challenging. 
+value is always evaluated to the value itself. 
+binding is to construct the Racket pair: 
+* name in Racket string, and 
+* value in MUPL expression (evaluated)
+ 
+The difficulty is two-folds, easy said hard done.
+* when to use MUPL or Racket and,
+* when to evaluate MUPL expression or not
 
