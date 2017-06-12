@@ -76,3 +76,33 @@ Anything not #f is true
 
 runtime semantics of the primitive
 
+## static vs dynamic typing
+some static, some dynamic type checking, tradeoffs.
+- which is more convenient?
+- not preventing useful programs
+- catch bugs earlier? but easier bugs
+- faster?
+- better code reuse?
+- better for prototyping?
+- better for later changes (new product features or bug fixes under new environment)?
+
+Better question: what should we enforces statically?
+
+## eval and quote
+Racket, Scheme, LISP, JavaScript, Ruby, ... have eval
+- at run-time, create some data
+- treat the data as program and run it
+- eval could be interpreter, compiler or combination of both
+```
+(list 'begin 
+  (list 'print "hi")
+  (list '+ 4 2))
+
+(quote (begin 
+  (print "hi")
+  (+ 4 2)))
+```
+quote and eval are inverse.
+what is quasiquoting?
+
+
