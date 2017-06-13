@@ -12,6 +12,6 @@ dynamic typed. object. class-based. irb (interactive ruby command)
 
 | features | dynamically typed | statically typed |
 | --- | --- | --- |
-| functional | Racket | SML |
-| object-oriented | Ruby | Java |
+| functional | :Racket: | :SML: |
+| object-oriented | :Ruby: | :Java, ect: |
 
