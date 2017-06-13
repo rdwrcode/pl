@@ -1,5 +1,12 @@
-def hi(name)
-  puts "Hello #{name}!"
+# comment
+# intro to Ruby
+
+class Hello
+  def first_method
+    puts "Hello world!"
+  end
 end
 
-hi("world")
+x = Hello.new
+x.first_method
+
