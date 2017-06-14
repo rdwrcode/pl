@@ -12,7 +12,7 @@ expressions:
 | Negate |? | ? | ? | ? |
 
 * FP: one function per column: interpreter, smaller functions
-* GUI: one class per row: GUI, different classes
+* OOP: one class per row: GUI, different classes
 
 ## adding operations or variants
 
