@@ -1,9 +1,9 @@
 # Ruby- continued
 
 ## OOP vs FP decomposition
-expressions, 
-different variants of expressions/constructors (data),
-different operations to perform on the data
+expressions: 
+* different variants of expressions/constructors (data),
+* different operations to perform on the data
 
 | operations | eval | toString | hasZero | ... |
 | --- | --- | --- | --- | --- |
@@ -11,8 +11,8 @@ different operations to perform on the data
 | Add |? | ? | ? | ? |
 | Negate |? | ? | ? | ? |
 
-one function per column: FP : interpreter, smaller functions
-one class per row: OOP : GUI, different classes
+* FP: one function per column: interpreter, smaller functions
+* GUI: one class per row: GUI, different classes
 
 ## adding operations or variants
 
