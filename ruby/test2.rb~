@@ -1,0 +1,15 @@
+# object state
+
+class A
+  def m1
+    @foo = 0 # internal state
+  end
+
+  def m2 x
+    @foo += x
+  end
+
+  def foo
+    @foo
+  end
+end
